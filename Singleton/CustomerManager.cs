@@ -9,8 +9,9 @@ namespace Singleton
     class CustomerManager
     {
         private static CustomerManager _customerManager;
+        static object _lockObject = new object();
 
-        private int _degisken;
+
         private CustomerManager()
         {
 
@@ -22,10 +23,14 @@ namespace Singleton
         }
         public static CustomerManager CreateAsSingleton()
         {
-            if(_customerManager==null)
+            lock (_lockObject)
             {
-                _customerManager = new CustomerManager();
+                if (_customerManager == null)
+                {
+                    _customerManager = new CustomerManager();
+                }
             }
+                
 
 
             return _customerManager;
