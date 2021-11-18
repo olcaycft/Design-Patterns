@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Ninject;
 
 namespace DependencyInjection
 {
@@ -6,7 +8,9 @@ namespace DependencyInjection
     {
         static void Main(string[] args)
         {
-            ProductManager productManager = new ProductManager(new NhbProductDal());
+            IKernel kernel = new StandardKernel();
+            kernel.Bind<IProductDal>().To<EfProductDal>().InSingletonScope();
+            ProductManager productManager = new ProductManager(kernel.Get<IProductDal>());
             productManager.Save();
         }
     }
